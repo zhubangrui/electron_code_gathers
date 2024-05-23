@@ -1,9 +1,10 @@
-import { app, BrowserWindow, globalShortcut, ipcMain, Menu } from 'electron'
+import { app, BrowserWindow, globalShortcut, ipcMain } from 'electron'
 import { electronApp, optimizer } from '@electron-toolkit/utils'
 import createWindow from './windows'
 import ipc from './ipc_main'
 import registerShortCut from './register_short_cut'
 import { winSize } from './ win_conf'
+import { db } from './db/db'
 
 // Menu.setApplicationMenu(null)
 app.whenReady().then(() => {
@@ -43,6 +44,7 @@ app.whenReady().then(() => {
 // explicitly with Cmd + Q.
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
+    if (db) db.close()
     app.quit()
   }
 })

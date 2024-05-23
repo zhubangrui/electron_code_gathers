@@ -27,7 +27,8 @@
     "mobx": "^6.12.3",
     "mobx-react-lite": "^4.0.7",
     "react-icons": "^5.2.1",
-    "react-router-dom": "^6.23.1"
+    "react-router-dom": "^6.23.1",
+    "sqlite3": "^5.1.7"
   },
   "devDependencies": {
     "@electron-toolkit/eslint-config-prettier": "^2.0.0",

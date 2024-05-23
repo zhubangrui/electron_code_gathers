@@ -8,6 +8,7 @@ const Config = () => {
 
   const setTheme = () => {
     window.api.changeThemeFromMain((_, type: string) => {
+      console.log(type)
       setSyncTheme(type as IThemeType)
     })
   }
