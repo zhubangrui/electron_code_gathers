@@ -19,12 +19,7 @@ const Config = () => {
     setTheme()
     return () => removeListeners()
   }, [themeType])
-  //首次打开时
-  useEffect(() => {
-    window.api.query('get_theme').then((res) => {
-      console.log(res)
-    })
-  }, [])
+
   return <div className={` w-full h-screen ${bgColor} ${fontColor}`}>config</div>
 }
 

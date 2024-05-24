@@ -45,11 +45,6 @@ const ipc = (win: BrowserWindow) => {
     }
   })
 
-  //配置页面，窗口打开时请求数据，获取主题
-  ipcMain.handle('get_theme', () => {
-    console.log('123')
-  })
-
   ipcMain.on('hide_win', () => {
     win?.hide()
   })

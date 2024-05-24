@@ -11,7 +11,6 @@ const useRegisterShortcut = () => {
     // return res
     if (!res) {
       runInAction(() => {
-        console.log('123123123')
         setError('快捷键注册失败')
       })
     }

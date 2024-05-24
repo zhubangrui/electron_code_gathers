@@ -107,10 +107,11 @@ const Search = () => {
   const changeTheme = () => {
     setThemeHandle(themeType)
     const currentTheme = themeType === 'dark' ? 'light' : 'dark'
-    console.log(currentTheme)
     window.api.query('update_theme', currentTheme).then(
       (res) => {
-        console.log(res)
+        if (res === false) {
+          setError('更新主题失败')
+        }
       },
       (err) => {
         setError(err)

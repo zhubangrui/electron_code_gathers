@@ -7,12 +7,12 @@ const CustomError = observer(() => {
     errorStore: { getError, setError }
   } = useStore()
   const err = getError()
-  console.log(err)
+  // console.log(err)
 
   useEffect(() => {
     const timer = setTimeout(() => setError(''), 2000)
     return () => clearTimeout(timer)
-  }, [])
+  }, [err])
 
   if (!err) return <></>
   return (

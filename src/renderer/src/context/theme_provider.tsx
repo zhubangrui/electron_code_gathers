@@ -32,7 +32,6 @@ const ThemeProvider = ({ children }: { children: ReactNode }): ReactNode => {
   useEffect(() => {
     window.api.query<boolean | string>('init_theme', themeType).then(
       (res) => {
-        console.log(res)
         if (res === false) {
           setError('数据初始化失败')
         } else {
