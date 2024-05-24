@@ -56,11 +56,10 @@ const ipc = (win: BrowserWindow) => {
   const createConfigWin = () => {
     configWin = createWindow({ width: 700, height: 500 }, '/config')
 
-    // configWin.on('show', () => {
-    //   //当窗口打开时，由主进程往渲染进程发送
-    //   syncTheme(configWin!, themeType!)
-    //   configWin?.setTitle('数据配置')
-    // })
+    configWin.on('show', () => {
+      //当窗口打开时，设置配置窗口的标题
+      configWin?.setTitle('数据集合管理')
+    })
 
     configWin.on('close', () => {
       configWin = null
