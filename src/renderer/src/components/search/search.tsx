@@ -18,6 +18,9 @@ const Search = () => {
   const listRef = useRef<HTMLDivElement>(null)
   const { themeType, fontColor, bgColor, hoverColor } = useTheme()
   const {
+    errorStore: { setError }
+  } = useStore()
+  const {
     listStore: { getList }
   } = useStore()
 
@@ -103,6 +106,16 @@ const Search = () => {
 
   const changeTheme = () => {
     setThemeHandle(themeType)
+    const currentTheme = themeType === 'dark' ? 'light' : 'dark'
+    console.log(currentTheme)
+    window.api.query('update_theme', currentTheme).then(
+      (res) => {
+        console.log(res)
+      },
+      (err) => {
+        setError(err)
+      }
+    )
   }
   useEffect(() => {
     window.api.changeTheme(themeType)

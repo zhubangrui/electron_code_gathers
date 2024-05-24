@@ -1,7 +1,55 @@
 import { BrowserWindow, ipcMain } from 'electron'
 import createWindow from './windows'
 import { winSize } from './ win_conf'
+import { initDb } from './db'
+
+const getTheme = async () => {
+  return await initDb.select('theme_table', 'id=?', [1])
+}
 const ipc = (win: BrowserWindow) => {
+  //初始化主题，添加到表中
+  ipcMain.handle('init_theme', async (_, themeType: string) => {
+    try {
+      const res = await getTheme()
+      if (res.length === 0) {
+        const row = await initDb.insert('theme_table', { theme: themeType })
+        if (row !== undefined) {
+          return false
+        } else {
+          return true
+        }
+      } else {
+        return res[0].theme
+      }
+    } catch (err) {
+      return false
+    }
+  })
+
+  //更改主题，更新到表中
+  ipcMain.handle('update_theme', async (_, themeType: string) => {
+    try {
+      const res = await getTheme()
+      if (res.length) {
+        const row = await initDb.update('theme_table', { theme: themeType }, 'id=?', [1])
+        if (row !== undefined) {
+          return false
+        } else {
+          return true
+        }
+      } else {
+        return false
+      }
+    } catch (err) {
+      return false
+    }
+  })
+
+  //配置页面，窗口打开时请求数据，获取主题
+  ipcMain.handle('get_theme', () => {
+    console.log('123')
+  })
+
   ipcMain.on('hide_win', () => {
     win?.hide()
   })
@@ -10,22 +58,22 @@ const ipc = (win: BrowserWindow) => {
     win.setSize(winSize.width, winSize.height + height)
   })
   let configWin: BrowserWindow | null = null
-  const createConfigWin = (themeType?: string) => {
+  const createConfigWin = () => {
     configWin = createWindow({ width: 700, height: 500 }, '/config')
 
-    configWin.on('show', () => {
-      //当窗口打开时，由主进程往渲染进程发送
-      syncTheme(configWin!, themeType!)
-      configWin?.setTitle('数据配置')
-    })
+    // configWin.on('show', () => {
+    //   //当窗口打开时，由主进程往渲染进程发送
+    //   syncTheme(configWin!, themeType!)
+    //   configWin?.setTitle('数据配置')
+    // })
 
     configWin.on('close', () => {
       configWin = null
     })
   }
-  ipcMain.on('open_config_win', (_, themeType: string) => {
+  ipcMain.on('open_config_win', () => {
     if (!configWin) {
-      createConfigWin(themeType)
+      createConfigWin()
     }
   })
   //判断当主窗口关闭，配置窗口也要关闭

@@ -1,5 +1,6 @@
 import { ReactNode, createContext, useContext, useEffect, useState } from 'react'
 import { themeInit } from '../common/config'
+import { useStore } from '@renderer/store'
 
 export type IThemeType = 'light' | 'dark'
 interface ITheme {
@@ -23,7 +24,28 @@ const ThemeProvider = ({ children }: { children: ReactNode }): ReactNode => {
   const [bgColor, setBgColor] = useState('')
   const [hoverColor, setHover] = useState('')
   const [themeType, setThemeType] = useState<IThemeType>('light')
+  const {
+    errorStore: { setError }
+  } = useStore()
 
+  //第一次加载时，将主题写入数据库
+  useEffect(() => {
+    window.api.query<boolean | string>('init_theme', themeType).then(
+      (res) => {
+        console.log(res)
+        if (res === false) {
+          setError('数据初始化失败')
+        } else {
+          if (res === 'light' || res === 'dark') {
+            setTheme(res as IThemeType)
+          }
+        }
+      },
+      (err) => {
+        setError(err)
+      }
+    )
+  }, [])
   const {
     lightBgColor,
     lightFontColor,

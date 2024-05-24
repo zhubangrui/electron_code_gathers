@@ -4,7 +4,9 @@ import createWindow from './windows'
 import ipc from './ipc_main'
 import registerShortCut from './register_short_cut'
 import { winSize } from './ win_conf'
-import { db } from './db/db'
+import { initDb, dataDb } from './db/'
+import createTable from './db/create_tables'
+createTable()
 
 // Menu.setApplicationMenu(null)
 app.whenReady().then(() => {
@@ -44,7 +46,8 @@ app.whenReady().then(() => {
 // explicitly with Cmd + Q.
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
-    if (db) db.close()
+    if (initDb) initDb.close()
+    if (dataDb) dataDb.close()
     app.quit()
   }
 })

@@ -11,6 +11,7 @@ declare global {
       changeTheme: (themeType: string) => void
       changeThemeFromMain: (fn: (event: Electron.IpcRendererEvent, ...args: any[]) => void) => void
       removeAllListeners: (channel: string) => void
+      query: <T>(channel: string, ...args: any[]) => Promise<T>
     }
   }
 }

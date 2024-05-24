@@ -11,7 +11,8 @@ const api = {
   changeTheme: (themeType: string) => ipcRenderer.send('change_theme', themeType),
   changeThemeFromMain: (fn: (event: IpcRendererEvent, ...args: any[]) => void) =>
     ipcRenderer.on('change_theme_from_main', fn),
-  removeAllListeners: (channel: string) => ipcRenderer.removeAllListeners(channel)
+  removeAllListeners: (channel: string) => ipcRenderer.removeAllListeners(channel),
+  query: (channel: string, ...args: any[]) => ipcRenderer.invoke(channel, ...args)
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to
